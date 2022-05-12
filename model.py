@@ -1,7 +1,7 @@
-from unicodedata import name
 from slugify import slugify
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
+from datetime import datetime
 from app import db
 
 
@@ -36,9 +36,7 @@ class Category(db.Model):
     subcategories = relationship('Subcategory', backref='category')
 
     def __init__(self, *args, **kwargs):
-        print(kwargs)
         if not 'slug' in kwargs:
-            print(slugify(kwargs.get('name')))
             kwargs['slug'] = slugify(kwargs.get('name', ''))
         return super().__init__(*args, **kwargs)
 
@@ -93,3 +91,33 @@ class Brand(db.Model):
     
     def __repr__(self) -> str:
         return f'Brand id: {self.id}, brand_name: {self.name}'
+
+
+class Product(db.Model):
+    __tablename__ = 'product'
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True)
+    category_id = db.Column(db.Integer, ForeignKey('category.id'))
+    subcategory_id = db.Column(db.Integer, ForeignKey('subcategory.id'))
+    subcategory_type_id = db.Column(db.Integer, ForeignKey('subcategory_type.id'))
+    brand_id = db.Column(db.Integer, ForeignKey('brand.id'))
+    name = db.Column(db.String(256))
+    slug = db.Column(db.String(256))
+    description = db.Column(db.Text)
+    specifications = db.Column(db.Text)
+    price = db.Column(db.Float(decimal_return_scale=2))
+    available = db.Column(db.Boolean, default=True)
+    created = db.Column(db.DateTime, default=datetime.utcnow())
+    article = db.Column(db.String(256))
+    image = db.Column(db.Text)
+    price_discount = db.Column(db.Float(decimal_return_scale=2))
+
+    def __init__(self, *args, **kwargs):
+        if not 'slug' in kwargs:
+            kwargs['slug'] = slugify(kwargs.get('name', ''))
+        if not 'price_discount' in kwargs:
+            kwargs['price_discount'] = self.price
+        return super().__init__(*args, **kwargs)
+
+    def __repr__(self) -> str:
+        return f'Product id: {self.id}, product_name: {self.name}'

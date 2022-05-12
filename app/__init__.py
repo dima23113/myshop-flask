@@ -16,14 +16,15 @@ def create_app():
     app.config['SECRET_KEY'] = "Gre3QmyUu7PD-xvtBKmsow"
     db.init_app(app)   
     migrate = Migrate(app, db)
-    from .admin import SetSlugField
-    from model import User, Category, Subcategory, Subcategory_type, Brand
+    from .admin import SetSlugField, SetEmptyProductField
+    from model import User, Category, Subcategory, Subcategory_type, Brand, Product
     admin = Admin(app, name='MyshopFlask', template_mode='bootstrap3')
     admin.add_view(ModelView(User, db.session, category='Account'))
     admin.add_view(SetSlugField(Category, db.session, category='Product'))
     admin.add_view(SetSlugField(Subcategory, db.session, category='Product'))
     admin.add_view(SetSlugField(Subcategory_type, db.session, category='Product'))
     admin.add_view(SetSlugField(Brand, db.session, category='Product'))
+    admin.add_view(SetEmptyProductField(Product, db.session, category='Product'))
 
 
     from shop.shop import shop_bp
