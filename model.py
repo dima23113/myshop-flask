@@ -138,9 +138,9 @@ class ImageProduct(db.Model):
     __tablename__ = 'image_product'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
-    img = db.Column(db.Text, unique=True, nullable=False)
-    name = db.Column(db.Text, nullable=False)
-    mimetype = db.Column(db.Text, nullable=False)
+    img = db.Column(db.Text, unique=True, nullable=True)
+    name = db.Column(db.Text, nullable=True)
+    mimetype = db.Column(db.Text, nullable=True)
     product = db.Column(db.Integer, ForeignKey('product.id'))
 
     def __repr__(self) -> str:
@@ -151,6 +151,6 @@ class ProductSize(db.Model):
     __tablename__ = 'prouduct_size'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(25), nullable=False)
-    qty = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String(25), nullable=True)
+    qty = db.Column(db.Integer, nullable=True)
     product = db.Column(db.Integer, ForeignKey('product.id'))
