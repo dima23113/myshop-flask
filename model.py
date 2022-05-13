@@ -1,3 +1,4 @@
+from enum import unique
 from slugify import slugify
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
@@ -34,6 +35,7 @@ class Category(db.Model):
     name = db.Column(db.String(55), nullable=False)
     slug = db.Column(db.String(55))
     subcategories = relationship('Subcategory', backref='category')
+    products = relationship('Product', backref='category_products')
 
     def __init__(self, *args, **kwargs):
         if not 'slug' in kwargs:
@@ -51,6 +53,7 @@ class Subcategory(db.Model):
     slug = db.Column(db.String(55))
     category_id = db.Column(db.Integer, ForeignKey('category.id'))
     subcategories_type = relationship('Subcategory_type', backref='subcategorytype')
+    products = relationship('Product', backref='subcategory_products')
 
     def __init__(self, *args, **kwargs):
         if not 'slug' in kwargs:
@@ -67,6 +70,7 @@ class Subcategory_type(db.Model):
     name = db.Column(db.String(55), nullable=False)
     slug = db.Column(db.String(55))
     subcategory_id = db.Column(db.Integer, ForeignKey('subcategory.id'))
+    products = relationship('Product', backref='subcategory_type_products')
 
     def __init__(self, *args, **kwargs):
         if not 'slug' in kwargs:
@@ -83,6 +87,10 @@ class Brand(db.Model):
     name = db.Column(db.String(256), nullable=False)
     slug = db.Column(db.String(256))
     description = db.Column(db.Text)
+    products = relationship('Product', backref='brand_products')
+    img = db.Column(db.Text, unique=True, nullable=True)
+    name_img = db.Column(db.Text, nullable=True)
+    mimetype = db.Column(db.Text, nullable=True)
 
     def __init__(self, *args, **kwargs):
         if not 'slug' in kwargs:
@@ -109,9 +117,12 @@ class Product(db.Model):
     available = db.Column(db.Boolean, default=True)
     created = db.Column(db.DateTime, default=datetime.utcnow())
     article = db.Column(db.String(256))
-    image = db.Column(db.Text)
+    img = db.Column(db.Text, unique=True, nullable=True,)
+    name_img = db.Column(db.Text, nullable=True)
+    mimetype = db.Column(db.Text, nullable=True)
     price_discount = db.Column(db.Float(decimal_return_scale=2))
-
+    product_images = relationship('ImageProduct', backref='image_products')
+    product_sizes= relationship('ProductSize', backref='prouduct_sizes')
     def __init__(self, *args, **kwargs):
         if not 'slug' in kwargs:
             kwargs['slug'] = slugify(kwargs.get('name', ''))
@@ -121,3 +132,25 @@ class Product(db.Model):
 
     def __repr__(self) -> str:
         return f'Product id: {self.id}, product_name: {self.name}'
+    
+
+class ImageProduct(db.Model):
+    __tablename__ = 'image_product'
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True)
+    img = db.Column(db.Text, unique=True, nullable=False)
+    name = db.Column(db.Text, nullable=False)
+    mimetype = db.Column(db.Text, nullable=False)
+    product = db.Column(db.Integer, ForeignKey('product.id'))
+
+    def __repr__(self) -> str:
+            return f'Image id: {self.id}, : {self.name}'
+
+
+class ProductSize(db.Model):
+    __tablename__ = 'prouduct_size'
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(25), nullable=False)
+    qty = db.Column(db.Integer, nullable=False)
+    product = db.Column(db.Integer, ForeignKey('product.id'))
