@@ -33,7 +33,7 @@ class Category(db.Model):
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(55), nullable=False)
-    slug = db.Column(db.String(55))
+    slug = db.Column(db.String(55), unique=True)
     subcategories = relationship('Subcategory', backref='category')
     products = relationship('Product', backref='category_products')
 
@@ -50,8 +50,8 @@ class Subcategory(db.Model):
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(55), nullable=False)
-    slug = db.Column(db.String(55))
-    category_id = db.Column(db.Integer, ForeignKey('category.id'))
+    slug = db.Column(db.String(55), unique=True)
+    category_slug = db.Column(db.String(55), ForeignKey('category.slug'))
     subcategories_type = relationship('Subcategory_type', backref='subcategorytype')
     products = relationship('Product', backref='subcategory_products')
 
@@ -68,8 +68,8 @@ class Subcategory_type(db.Model):
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(55), nullable=False)
-    slug = db.Column(db.String(55))
-    subcategory_id = db.Column(db.Integer, ForeignKey('subcategory.id'))
+    slug = db.Column(db.String(55), unique=True)
+    subcategory_slug = db.Column(db.String(55), ForeignKey('subcategory.slug'))
     products = relationship('Product', backref='subcategory_type_products')
 
     def __init__(self, *args, **kwargs):
@@ -85,7 +85,7 @@ class Brand(db.Model):
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), nullable=False)
-    slug = db.Column(db.String(256))
+    slug = db.Column(db.String(256), unique=True)
     description = db.Column(db.Text)
     products = relationship('Product', backref='brand_products')
     img = db.Column(db.Text, unique=True, nullable=True)
@@ -105,10 +105,10 @@ class Product(db.Model):
     __tablename__ = 'product'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
-    category_id = db.Column(db.Integer, ForeignKey('category.id'))
-    subcategory_id = db.Column(db.Integer, ForeignKey('subcategory.id'))
-    subcategory_type_id = db.Column(db.Integer, ForeignKey('subcategory_type.id'))
-    brand_id = db.Column(db.Integer, ForeignKey('brand.id'))
+    category_slug = db.Column(db.String(256), ForeignKey('category.slug'))
+    subcategory_slug = db.Column(db.String(256), ForeignKey('subcategory.slug'))
+    subcategory_type_slug = db.Column(db.String(256), ForeignKey('subcategory_type.slug'))
+    brand_slug = db.Column(db.String(256), ForeignKey('brand.slug'))
     name = db.Column(db.String(256))
     slug = db.Column(db.String(256))
     description = db.Column(db.Text)
