@@ -1,9 +1,9 @@
-from mimetypes import init
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_debugtoolbar import DebugToolbarExtension
 import os
 
 db = SQLAlchemy()
@@ -21,6 +21,7 @@ def create_app():
     app.debug = True
     db.init_app(app)
     migrate = Migrate(app, db)
+    toolbar = DebugToolbarExtension(app)
 
     # Добавляем модели в админку и сортируем их по категориям
 

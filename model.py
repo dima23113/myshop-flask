@@ -1,4 +1,3 @@
-from enum import unique
 from slugify import slugify
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
