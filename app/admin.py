@@ -43,7 +43,7 @@ class SetEmptyProductField(ModelView):
         model.slug = slugify(model.name)
         model.price = Decimal(model.price).quantize(Decimal('1.00'))
         model.price_discount = model.price
-        if not form.image:
+        if form.image.data:
             img = form.image.data
             model.img = os.path.abspath(os.path.join(basedir, img.filename))
             model.name_img = secure_filename(img.filename)
