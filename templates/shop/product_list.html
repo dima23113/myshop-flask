@@ -12,7 +12,7 @@
                         {% for product in context.products %}
                         <li class="product">
                             <div class="col-item">
-                                <a class="col-item-a" href="#"><img
+                                <a class="col-item-a" href="{{url_for('shop_bp.product_detail', slug=product.slug)}}"><img
                                         alt="image"
                                         src="{%if product.img %}{{url_for('static', filename='uploads/' + product.img|thumbnail('300x341')|get_path)}}{%else%}{%endif%}"></a>
                                 <div class="col-item-about">
