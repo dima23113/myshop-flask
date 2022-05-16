@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_debugtoolbar import DebugToolbarExtension
+from flask_thumbnails import Thumbnail
 import os
 
 db = SQLAlchemy()
@@ -19,9 +20,13 @@ def create_app():
     app.config['SECRET_KEY'] = "Gre3QmyUu7PD-xvtBKmsow"
     app.config['UPLOAD_FOLDER'] = os.path.join(basedir, 'app/static/uploads')
     app.debug = True
+    app.config['THUMBNAIL_MEDIA_ROOT'] = '../media'
+    app.config['THUMBNAIL_MEDIA_URL'] = '/static/'
     db.init_app(app)
     migrate = Migrate(app, db)
     toolbar = DebugToolbarExtension(app)
+    thumb = Thumbnail(app)
+    
 
     # Добавляем модели в админку и сортируем их по категориям
 

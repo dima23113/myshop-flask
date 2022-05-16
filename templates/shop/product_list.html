@@ -14,7 +14,7 @@
                                     <div class="col-item">
                                             <a class="col-item-a" href="#"><img
                                                     alt="image"
-                                                    src="#"></a>
+                                                    src="{%if product.img %}{{url_for('static', filename='uploads/'+product.name_img)}}{%else%}{%endif%}"></a>
                                         <div class="col-item-about">
                                             <div class="col-item__title">
                                                 <p>{{ product.brand_slug }}</p>

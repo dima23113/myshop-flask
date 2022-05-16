@@ -38,10 +38,16 @@ class SetEmptyProductField(ModelView):
         model.slug = slugify(model.name)
         model.price = Decimal(model.price).quantize(Decimal('1.00'))
         model.price_discount = model.price
+        print(form.image)
+        img = form.image.data
+        model.img = os.path.abspath(os.path.join(basedir, img.filename))
+        model.name_img = secure_filename(img.filename)
+        model.mimetype = img.mimetype
+        img.save(os.path.join(basedir, img.filename))
         return super().on_model_change(form, model, is_created)
 
     form_extra_fields = {
-        'Изображение': FileField('image', validators=[FileAllowed(['jpeg', 'png', 'webp'])])
+        'image': FileField('image', validators=[FileAllowed(['jpeg', 'png', 'webp'])])
     }
     form_excluded_columns = ('img', 'name_img', 'mimetype', 'price_discount', 'product_images', 'product_sizes', 'created')
 
