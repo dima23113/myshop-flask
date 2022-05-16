@@ -10,6 +10,7 @@ import os
 db = SQLAlchemy()
 basedir = os.path.abspath(os.path.dirname(__name__))
 
+
 def create_app():
     # Создаем приложение, добавляем переменные конфигурации
 
@@ -18,15 +19,15 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
     app.config['SECRET_KEY'] = "Gre3QmyUu7PD-xvtBKmsow"
-    app.config['UPLOAD_FOLDER'] = os.path.join(basedir, 'app/static/uploads')
+    app.config['UPLOAD_FOLDER'] = os.path.join(basedir, '../static/uploads')
+    app.config['THUMBNAIL_MEDIA_THUMBNAIL_ROOT'] = os.path.join(basedir, 'media')
+    app.config['THUMBNAIL_MEDIA_THUMBNAIL_URL'] = '/media/'
     app.debug = True
-    app.config['THUMBNAIL_MEDIA_ROOT'] = '../media'
-    app.config['THUMBNAIL_MEDIA_URL'] = '/static/'
+
     db.init_app(app)
     migrate = Migrate(app, db)
     toolbar = DebugToolbarExtension(app)
     thumb = Thumbnail(app)
-    
 
     # Добавляем модели в админку и сортируем их по категориям
 

@@ -5,20 +5,23 @@ from slugify import slugify
 from model import Product, ProductSize, ImageProduct
 from flask_admin.model.form import InlineFormAdmin
 from werkzeug.utils import secure_filename
-import os 
+import os
+from app import basedir
 
-basedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/uploads')
+basedir = os.path.join(basedir, 'static/uploads')
+
 
 class ProductSizesInlineForm(InlineFormAdmin):
-    form_columns=['name', 'qty', 'id']
+    form_columns = ['name', 'qty', 'id']
+
 
 class ProductImgInlineForm(InlineFormAdmin):
+    form_columns = ['id']
 
-    form_columns=['id']
     def postprocess_form(self, form):
         form.images_product = FileField('images_product', validators=[FileAllowed(['jpeg', 'png', 'webp'])])
         return super().postprocess_form(form)
-    
+
     def on_model_change(self, form, model, is_created):
         img = form.images_product.data
         model.img = os.path.abspath(os.path.join(basedir, img.filename))
@@ -27,11 +30,13 @@ class ProductImgInlineForm(InlineFormAdmin):
         img.save(os.path.join(basedir, img.filename))
         return super().on_model_change(form, model, is_created)
 
+
 class SetSlugField(ModelView):
 
     def on_model_change(self, form, model, is_created):
         model.slug = slugify(model.name)
         return super().on_model_change(form, model, is_created)
+
 
 class SetEmptyProductField(ModelView):
     def on_model_change(self, form, model, is_created):
@@ -49,6 +54,7 @@ class SetEmptyProductField(ModelView):
     form_extra_fields = {
         'image': FileField('image', validators=[FileAllowed(['jpeg', 'png', 'webp'])])
     }
-    form_excluded_columns = ('img', 'name_img', 'mimetype', 'price_discount', 'product_images', 'product_sizes', 'created')
+    form_excluded_columns = (
+    'img', 'name_img', 'mimetype', 'price_discount', 'product_images', 'product_sizes', 'created')
 
     inline_models = (ProductImgInlineForm(ImageProduct), ProductSizesInlineForm(ProductSize))

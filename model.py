@@ -7,7 +7,7 @@ from app import db
 
 class User(db.Model):
     __tablename__ = 'user'
-    __table_args__ = {'extend_existing': True} 
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(25), nullable=False)
@@ -24,7 +24,6 @@ class User(db.Model):
 
     def __repr__(self) -> str:
         return f'User id: {self.id}, email: {self.email}'
-
 
 
 class Category(db.Model):
@@ -44,6 +43,7 @@ class Category(db.Model):
     def __repr__(self) -> str:
         return f'Category id: {self.id}, category_name: {self.name}'
 
+
 class Subcategory(db.Model):
     __tablename__ = 'subcategory'
     __table_args__ = {'extend_existing': True}
@@ -58,9 +58,10 @@ class Subcategory(db.Model):
         if not 'slug' in kwargs:
             kwargs['slug'] = slugify(kwargs.get('name', ''))
         return super().__init__(*args, **kwargs)
-    
+
     def __repr__(self) -> str:
         return f'Subcategory id: {self.id}, subcategory_name: {self.name}'
+
 
 class Subcategory_type(db.Model):
     __tablename__ = 'subcategory_type'
@@ -79,6 +80,7 @@ class Subcategory_type(db.Model):
     def __repr__(self) -> str:
         return f'Subcategory_type id: {self.id}, subcategory_type_name: {self.name}'
 
+
 class Brand(db.Model):
     __tablename__ = 'brand'
     __table_args__ = {'extend_existing': True}
@@ -95,7 +97,7 @@ class Brand(db.Model):
         if not 'slug' in kwargs:
             kwargs['slug'] = slugify(kwargs.get('name', ''))
         return super().__init__(*args, **kwargs)
-    
+
     def __repr__(self) -> str:
         return f'Brand id: {self.id}, brand_name: {self.name}'
 
@@ -116,12 +118,13 @@ class Product(db.Model):
     available = db.Column(db.Boolean, default=True)
     created = db.Column(db.DateTime, default=datetime.utcnow())
     article = db.Column(db.String(256))
-    img = db.Column(db.Text, unique=True, nullable=True,)
+    img = db.Column(db.Text, unique=True, nullable=True, )
     name_img = db.Column(db.Text, nullable=True)
     mimetype = db.Column(db.Text, nullable=True)
     price_discount = db.Column(db.Float(decimal_return_scale=2))
     product_images = relationship('ImageProduct', backref='image_products')
-    product_sizes= relationship('ProductSize', backref='prouduct_sizes')
+    product_sizes = relationship('ProductSize', backref='prouduct_sizes')
+
     def __init__(self, *args, **kwargs):
         if not 'slug' in kwargs:
             kwargs['slug'] = slugify(kwargs.get('name', ''))
@@ -131,7 +134,7 @@ class Product(db.Model):
 
     def __repr__(self) -> str:
         return f'Product id: {self.id}, product_name: {self.name}'
-    
+
 
 class ImageProduct(db.Model):
     __tablename__ = 'image_product'
@@ -143,7 +146,7 @@ class ImageProduct(db.Model):
     product = db.Column(db.Integer, ForeignKey('product.id'))
 
     def __repr__(self) -> str:
-            return f'Image id: {self.id}, : {self.name}'
+        return f'Image id: {self.id}, : {self.name}'
 
 
 class ProductSize(db.Model):
