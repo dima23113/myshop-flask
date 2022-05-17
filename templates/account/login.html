@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход-Ноябрь{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-lg-4"></div>
+                <div class="auth col-md-4 col-sm-4 col-lg-4">
+                    <div class="customer-login">
+                        <form class="login-form" method="post">
+                            <div class="block-a">
+                                <h1 style="text-align: center">Авторизоваться</h1>
+                            </div>
+                            <div class="block-a">
+                                <label class="label-form">
+                                    Введите E-mail
+                                </label>
+                                <input type="email" name="email" required="" id="id_email">
+                            </div>
+                            <div class="block-a">
+                                <label class="label-form">
+                                    Введите пароль
+                                </label>
+                                <input type="password" name="password" required="" id="id_password">
+                            </div>
+                            <div class="block-submit">
+                                <input type="submit" value="Войти">
+                            </div>
+                            <div class="block-link">
+                                <a href="#" class="block-link-a-left">Забыли
+                                    пароль?</a>
+                                <a href="{{ url_for('account_bp.register') }}"
+                                   class="block-link-a-right">Регистрация</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4"></div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

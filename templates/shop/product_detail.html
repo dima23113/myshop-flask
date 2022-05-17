@@ -1,165 +1,164 @@
 {% extends 'base.html' %}
 {% block title %}{{ context.product.name }}-Ноябрь Скейтшоп{% endblock %}
 {% block content %}
-<div class="content">
-    <div class="product-detail">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="images col-md-8 col-sm-8 col-lg-8">
-                    <div class="img-product" id="img-product">
-                        {% for image in context.images %}
-                        <a href="{{url_for('static', filename='uploads/' + image.img|thumbnail('535x605')|get_path)}}"
-                           data-lightbox="test"><img
-                                src="{{url_for('static', filename='uploads/' + image.img|thumbnail('535x605')|get_path)}}"
-                                alt="{{ context.product.name }}"></a>
-                        {% endfor %}
-                    </div>
-                    <div class="roll-swipe">
-                        <div class="swiper mySwiper">
-                            <div class="swiper-wrapper">
-                                {% for image in context.images %}
-                                <div class="swiper-slide"><img
-                                        src="{{url_for('static', filename='uploads/' + image.img|thumbnail('535x605')|get_path)}}"
-                                        alt="{{ context.product.name }}">
+    <div class="content">
+        <div class="product-detail">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="images col-md-8 col-sm-8 col-lg-8">
+                        <div class="img-product" id="img-product">
+                            {% for image in context.images %}
+                                <a href="{{ url_for('static', filename='uploads/' + image.img|thumbnail('535x605')|get_path) }}"
+                                   data-lightbox="test"><img
+                                        src="{{ url_for('static', filename='uploads/' + image.img|thumbnail('535x605')|get_path) }}"
+                                        alt="{{ context.product.name }}"></a>
+                            {% endfor %}
+                        </div>
+                        <div class="roll-swipe">
+                            <div class="swiper mySwiper">
+                                <div class="swiper-wrapper">
+                                    {% for image in context.images %}
+                                        <div class="swiper-slide"><img
+                                                src="{{ url_for('static', filename='uploads/' + image.img|thumbnail('535x605')|get_path) }}"
+                                                alt="{{ context.product.name }}">
+                                        </div>
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-pagination"></div>
                             </div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                            <div class="swiper-pagination"></div>
                         </div>
                     </div>
-                </div>
-                <div class="info col-md-4 col-sm-4 col-lg-4">
-                    <ul class="info-table">
-                        <li><a class="brand-link" title="{{ context.product.brand|upper }}"
-                               href="#">{{
-                            context.product.brand_slug.name|upper }}</a>
-                        </li>
-                        <li><span class="name" itemprop="name">{{ context.product.name }}</span></li>
-                        <li>
-                            {% if context.product.price == context.product.price_discount or
+                    <div class="info col-md-4 col-sm-4 col-lg-4">
+                        <ul class="info-table">
+                            <li><a class="brand-link" title="{{ context.product.brand|upper }}"
+                                   href="#">{{ context.product.brand_slug.name|upper }}</a>
+                            </li>
+                            <li><span class="name" itemprop="name">{{ context.product.name }}</span></li>
+                            <li>
+                                {% if context.product.price == context.product.price_discount or
                             context.product.price_discount == None %}
-                            <span itemprop="price" class="product-price">{{ context.product.price }} руб.</span>
-                            {% else %}
-                            <span itemprop="price" class="product-price"><s>{{ context.product.price }} руб.</s></span>
-                            <span itemprop="price"
-                                  class="product-price">{{ context.product.price_discount }} руб.</span>
-                            {% endif %}
-                        </li>
-                        <li>
-                            <div class="choose_size_wrapper">
-                                <div class="choose_size_label"><label>Размер:</label></div>
-                                <div class="choose_size_columns">
-                                    <div class="choose_size_column">
-                                        {% for size in context.sizes %}
-                                        {% if size %}
-                                        {% if size.qty <= 0 %}{% else %}
-                                        <a class="size" id="{{ size.name }}" href="#"
-                                           data-mydata={{ size.name }}>{{ size.name }}</a>
-                                        {% endif %}
-                                        {% else %}<p>Товар закончился</p>{% endif %}{% endfor %}
+                                    <span itemprop="price" class="product-price">{{ context.product.price }} руб.</span>
+                                {% else %}
+                                    <span itemprop="price" class="product-price"><s>{{ context.product.price }} руб.</s></span>
+                                    <span itemprop="price"
+                                          class="product-price">{{ context.product.price_discount }} руб.</span>
+                                {% endif %}
+                            </li>
+                            <li>
+                                <div class="choose_size_wrapper">
+                                    <div class="choose_size_label"><label>Размер:</label></div>
+                                    <div class="choose_size_columns">
+                                        <div class="choose_size_column">
+                                            {% for size in context.sizes %}
+                                                {% if size %}
+                                                    {% if size.qty <= 0 %}{% else %}
+                                                        <a class="size" id="{{ size.name }}" href="#"
+                                                           data-mydata={{ size.name }}>{{ size.name }}</a>
+                                                    {% endif %}
+                                                {% else %}<p>Товар закончился</p>{% endif %}{% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="product-add">
+                                    <div class="customer-login">
+                                        <form class="login-form" method="post"
+                                              action="."
+                                              style="padding-top: 0px;margin-top: 0px;">
+                                            <div class="block-a">
+                                                <input class="size" value="" type="text" name="size" required=""
+                                                       id="id_size" hidden>
+                                            </div>
+                                            <div class="block-submit">
+                                                <input type="submit" value="В козрину">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="detail-ship">
+                                    <a class="detail" id="detail" href="#">Детали</a>
+                                    <a class="ship" id="ship" href="#">Доставка</a>
+                                </div>
+                            </li>
+                            <br>
+                            <div class="product-info" id="info_ship">
+                                <div class="info-a">
+                                    <p><span>{{ context.product.description|escape }}</span></p>
+                                    {{ context.product.specifications|unordered_list }}
+                                    <p>Артикул: {{ context.product.article }}</p>
+                                </div>
+                                <div class="ship-a" id="ship-a">
+                                    <p>Москва: самовывоз из магазина Ноябрь по адресу раз два 25/3.</p>
+                                    <p>Московская область&nbsp;и Санкт-Петербург: доставка осуществляется курьерской
+                                        службой
+                                        Dalli.</p>
+                                    <div class="rte">
+                                        <p>Стоимость доставки: рассчитывается автоматически на сайте курьерской службы
+                                            https://dalli-service.com/<br><br>Сроки доставки: 1-3 дня с момента
+                                            подтверждения заказа. Заказ подтверждается после звонка от нашего
+                                            сотрудника.</p>
                                     </div>
                                 </div>
                             </div>
-                        </li>
-                        <li>
-                            <div class="product-add">
-                                <div class="customer-login">
-                                    <form class="login-form" method="post"
-                                          action="."
-                                          style="padding-top: 0px;margin-top: 0px;">
-                                        <div class="block-a">
-                                            <input class="size" value="" type="text" name="size" required=""
-                                                   id="id_size" hidden>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="recommendation">
+            <div class="container-fluid">
+                <div class="row">
+                    <h2>
+                        <span>Рекомендуем</span>
+                    </h2>
+                    <div class="recommendations col-md-12 col-sm-12 col-lg-12">
+                        <ul class="products-list">
+                            {% for rec in context.recommendations %}
+                                <li class="product">
+                                    <div class="col-item">
+                                        <a class="col-item-a" href="#"><img
+                                                alt="image"
+                                                src="{{ url_for('static', filename='uploads/' + rec.img|thumbnail('319x344')|get_path) }}"
+                                                loading="lazy"></a>
+                                        <div class="col-item-about">
+                                            <div class="col-item__title">
+                                                <p>{{ rec.brand|upper }}</p>
+                                                <p>{{ rec.name|upper }}</p>
+                                            </div>
+                                            <div class="price">
+                                                {% if rec.price == rec.price_discount or rec.price_discount is None %}
+                                                    {{ rec.price }}
+                                                {% else %}
+                                                    <s>{{ rec.price }}</s>
+                                                    <span>{{ rec.price_discount }}</span>
+                                                {% endif %}
+                                            </div>
                                         </div>
-                                        <div class="block-submit">
-                                            <input type="submit" value="В козрину">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="detail-ship">
-                                <a class="detail" id="detail" href="#">Детали</a>
-                                <a class="ship" id="ship" href="#">Доставка</a>
-                            </div>
-                        </li>
-                        <br>
-                        <div class="product-info" id="info_ship">
-                            <div class="info-a">
-                                <p><span>{{ context.product.description|escape }}</span></p>
-                                {{ context.product.specifications|unordered_list }}
-                                <p>Артикул: {{ context.product.article }}</p>
-                            </div>
-                            <div class="ship-a" id="ship-a">
-                                <p>Москва: самовывоз из магазина Ноябрь по адресу раз два 25/3.</p>
-                                <p>Московская область&nbsp;и Санкт-Петербург: доставка осуществляется курьерской
-                                    службой
-                                    Dalli.</p>
-                                <div class="rte">
-                                    <p>Стоимость доставки: рассчитывается автоматически на сайте курьерской службы
-                                        https://dalli-service.com/<br><br>Сроки доставки: 1-3 дня с момента
-                                        подтверждения заказа. Заказ подтверждается после звонка от нашего
-                                        сотрудника.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </ul>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="recommendation">
-        <div class="container-fluid">
-            <div class="row">
-                <h2>
-                    <span>Рекомендуем</span>
-                </h2>
-                <div class="recommendations col-md-12 col-sm-12 col-lg-12">
-                    <ul class="products-list">
-                        {% for rec in context.recommendations %}
-                        <li class="product">
-                            <div class="col-item">
-                                <a class="col-item-a" href="#"><img
-                                        alt="image"
-                                        src="{{url_for('static', filename='uploads/' + rec.img|thumbnail('319x344')|get_path)}}"
-                                        loading="lazy"></a>
-                                <div class="col-item-about">
-                                    <div class="col-item__title">
-                                        <p>{{ rec.brand|upper }}</p>
-                                        <p>{{ rec.name|upper }}</p>
-                                    </div>
-                                    <div class="price">
-                                        {% if rec.price == rec.price_discount or rec.price_discount is None %}
-                                        {{ rec.price }}
-                                        {% else %}
-                                        <s>{{ rec.price }}</s>
-                                        <span>{{ rec.price_discount }}</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="{{url_for('static', filename='js/libs/zoom/dist/js/lightbox-plus-jquery.js')}}"></script>
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script>
-    lightbox.option({
-        'wrapAround': true,
-        'resizeDuration': 200,
-        'maxWidth': 700,
-        'maxHeight': 700,
-        'fitImagesInViewport': false,
-        'alwaysShowNavOnTouchDevices': true
-    })
-</script>
-<script src="{{url_for('static', filename='js/add_cart.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/libs/zoom/dist/js/lightbox-plus-jquery.js') }}"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        lightbox.option({
+            'wrapAround': true,
+            'resizeDuration': 200,
+            'maxWidth': 700,
+            'maxHeight': 700,
+            'fitImagesInViewport': false,
+            'alwaysShowNavOnTouchDevices': true
+        })
+    </script>
+    <script src="{{ url_for('static', filename='js/add_cart.js') }}"></script>
 {% endblock %}

@@ -2,15 +2,16 @@ from slugify import slugify
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
+from flask_login import UserMixin
 from app import db
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'user'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(25), nullable=False)
+    password = db.Column(db.String(120), nullable=False)
     first_name = db.Column(db.String(120), nullable=True)
     second_name = db.Column(db.String(120), nullable=True)
     zip_code = db.Column(db.String(20), nullable=True)

@@ -33,7 +33,6 @@ def product_list_by_category(*args, **kwargs):
 @shop_bp.route('/products/<slug>/', methods=['GET', 'POST'])
 def product_detail(*args, **kwargs):
     if request.method == 'GET':
-        print(kwargs)
         product = Product.query.filter_by(slug=kwargs['slug']).first()
         recommendations = Product.query.all()[:6]
         product_image = ImageProduct.query.filter(ImageProduct.product==product.id).all()
@@ -48,7 +47,7 @@ def product_detail(*args, **kwargs):
 
 
 
-@shop_bp.context_processor
+@shop_bp.app_context_processor
 def navbar_menu():
     categories = Category.query.all()
 

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация-Ноябрь{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-lg-4"></div>
+                <div class="auth col-md-4 col-sm-4 col-lg-4">
+                    <div class="customer-login">
+                        <form class="login-form" method="post">
+                            <div class="block-a">
+                                <h1 style="text-align: center">Регистрация</h1>
+                            </div>
+                            <div class="block-a">
+                                <label class="label-form">
+                                    Введите E-mail
+                                </label>
+                                <input type="email" name="email" required="" id="id_email">
+                            </div>
+                            <div class="block-a">
+                                <label class="label-form">
+                                    Введите пароль
+                                </label>
+                                <input type="password" name="password" required="" id="id_password">
+                            </div>
+                            <div class="block-a">
+                                <label class="label-form">
+                                    Повторите пароль
+                                </label>
+                                <input type="password" name="password2" required="" id="id_password2">
+                            </div>
+                            <div class="block-submit">
+                                <input type="submit" value="Зарегистрироваться">
+                            </div>
+                            <div class="block-link">
+                                <a href="{{ url_for('account_bp.login') }}" style="text-align: left"
+                                   class="block-link-a-right">Авторизация</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

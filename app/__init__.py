@@ -5,10 +5,12 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_thumbnails import Thumbnail
+from flask_login import LoginManager
 import os
 
 db = SQLAlchemy()
 basedir = os.path.abspath(os.path.dirname(__name__))
+login_manager = LoginManager()
 
 
 def create_app():
@@ -28,7 +30,7 @@ def create_app():
     migrate = Migrate(app, db)
     toolbar = DebugToolbarExtension(app)
     thumb = Thumbnail(app)
-
+    login_manager.init_app(app)
     # Добавляем модели в админку и сортируем их по категориям
 
     from .admin import SetSlugField, SetEmptyProductField
@@ -45,4 +47,7 @@ def create_app():
 
     from shop.shop import shop_bp
     app.register_blueprint(shop_bp, url_prefix='/')
+
+    from account.account import account_bp
+    app.register_blueprint(account_bp, url_prefix='/account')
     return app

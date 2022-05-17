@@ -1,43 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="content">
-    <div class="content-items">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="sidebar col-md-2 col-sm-2 col-lg-2">
-                </div>
-                <div class="product-list col-md-10 col-sm-10 col-lg-10">
-                    <ul class="products-list">
-                        {% for product in context.products %}
-                        <li class="product">
-                            <div class="col-item">
-                                <a class="col-item-a" href="{{url_for('shop_bp.product_detail', slug=product.slug)}}"><img
-                                        alt="image"
-                                        src="{%if product.img %}{{url_for('static', filename='uploads/' + product.img|thumbnail('300x341')|get_path)}}{%else%}{%endif%}"></a>
-                                <div class="col-item-about">
-                                    <div class="col-item__title">
-                                        <p>{{ product.brand_slug }}</p>
-                                        <p>{{ product.name }}</p>
+    <div class="content">
+        <div class="content-items">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="sidebar col-md-2 col-sm-2 col-lg-2">
+                    </div>
+                    <div class="product-list col-md-10 col-sm-10 col-lg-10">
+                        <ul class="products-list">
+                            {% for product in context.products %}
+                                <li class="product">
+                                    <div class="col-item">
+                                        <a class="col-item-a"
+                                           href="{{ url_for('shop_bp.product_detail', slug=product.slug) }}"><img
+                                                alt="image"
+                                                src="
+                                                        {% if product.img %}{{ url_for('static', filename='uploads/' + product.img|thumbnail('300x341')|get_path) }}{% else %}{% endif %}"></a>
+                                        <div class="col-item-about">
+                                            <div class="col-item__title">
+                                                <p>{{ product.brand_slug }}</p>
+                                                <p>{{ product.name }}</p>
+                                            </div>
+                                            <div class="price">
+                                                {% if product.price == product.price_discount or product.price_discount is None %}
+                                                    {{ product.price }}
+                                                {% else %}
+                                                    <s>{{ product.price }}</s>
+                                                    <span>{{ product.price_discount }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="price">
-                                        {% if product.price == product.price_discount or product.price_discount is None
-                                        %}
-                                        {{ product.price }}
-                                        {% else %}
-                                        <s>{{ product.price }}</s>
-                                        <span>{{ product.price_discount }}</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<script src="#"></script>
+    <script src="#"></script>
 {% endblock %}

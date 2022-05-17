@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block title %}Корзина-Ноябрь{% endblock %}
+{% block content %}
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2 col-sm-2 col-lg-2"></div>
+                <div class="col-md-8 col-sm-8 col-lg-8">
+                    <div class="separator" style="margin-top: 35px; margin-bottom: 25px"></div>
+                </div>
+                <div class="col-md-2 col-sm-2 col-lg-2"></div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2 col-sm-2 col-lg-2"></div>
+                <div class="cart-wrapper col-md-8 col-sm-8 col-lg-8">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="cart-col col-md-8 col-sm-8 col-lg-8">
+                                <div class="cart-clear">
+                                    <p>КОРЗИНА</p>
+                                    <a class="remove-all" href="#">Очистить корзину</a>
+                                </div>
+                                <div class="cart-side">
+                                    <div class="items-wrapper">
+                                        {% for item in context.cart %}
+                                            {% with product=item.product %}
+                                                <div class="items-wrapper__product">
+                                                    <div class="product__image">
+                                                        <a class="img"
+                                                           href="{{ url_for('shop_bp.product_detail', product.slug }}">
+                                                            <img src="{{ url_for('static', filename='uploads/' + product.img|thumbnail('100x100')|get_path) }}">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product__descr">
+                                                        <div class="title">
+                                                            <a href="{{ url_for('shop_bp.product_detail', product.slug }}">{{ product.name }}</a>
+                                                        </div>
+
+                                                        <div>Размер: {{ item.size }}</div>
+                                                        <div>Артикул: {{ product.article }}</div>
+                                                        <div class="cart_row">
+                                                            <div class="ui-btn-collections">
+                                                                <div class="ui-btn --minus"><p id="minus" class="sign"
+                                                                                               data-name="{{ product.name }}"
+                                                                                               data-id="{{ product.id }}-{{ item.size }}"
+                                                                                               style="font-size: 25px;">
+                                                                    -</p></div>
+                                                                <input type="text" class="{{ product.name }}"
+                                                                       id="intLimitTextBox{{ product.id }}-{{ item.size }}"
+                                                                       value="{{ item.qty }}"
+                                                                       data-qty="{{ item.qty }}" name="product-qty"
+                                                                       data-size="{{ item.size }}" data-max_qty=""
+                                                                       readonly>
+                                                                <div class="ui-btn --plus"><p class="sign" id="plus"
+                                                                                              data-name="{{ product.name }}"
+                                                                                              data-id="{{ product.id }}-{{ item.size }}"
+                                                                                              style="font-size: 25px;">
+                                                                    +</p></div>
+                                                            </div>
+                                                            <div class="price">Цена: {{ item.price }} руб.</div>
+                                                        </div>
+                                                    </div>
+                                                    <a class="remove-btn" id="{{ product.id }}"
+                                                       data-product="{{ product.id }}" data-size="{{ item.size }}"
+                                                       name="remove"
+                                                       href="#"><img
+                                                            src="{{ url_for('static', filename='img/close-icon.png') }}"></a>
+                                                </div>
+                                            {% endwith %}
+                                        {% endfor %}
+                                    </div>
+
+                                    <div>
+                                        <p class="price_">Стомость товаров: {{ context.cart.get_total_price }} руб.</p>
+                                        <p class="price_">Стомость товаров со
+                                            скидкой: {{ context.cart.get_total_discount_price }}
+                                            руб.</p>
+                                        <p class="price_">Итого: {{ context.cart.get_total_discount_price }} руб.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="buy col-md-4 col-sm-4 col-lg-4">
+
+                                <div class="cart-col">
+                                    <p style="margin-bottom: 0rem;">Оформление заказа</p>
+                                    {% if not user.is_authenticated %}
+                                        <div class="cart-side">
+                                            <div class="log">
+                                                <a class="log-in" href="{% url 'account:login' %}">Войти</a>
+                                                <a class="reg"
+                                                   href="{% url 'account:register' %}">Зарегистрироваться</a>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        {% if context.cart|length > 0 %}
+                                            <form method="post" action=".">
+                                            <div class="cart-side">
+                                                <div class="done">
+                                                    <div class="profile-info">
+                                                        <a href=".">Изменить</a>
+                                                        <h3>1. Контакты</h3>
+                                                        <p>{{ user.first_name }}&nbsp{{ user.last_name }}, {{ user.phone }}, {{ user.email }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cart-side">
+                                                <div class="ship-info">
+                                                    <h3>2. Доставка</h3>
+                                                    <p>Укажите тип доставки: <select class="select-custom"
+                                                                                     name="ship_type"
+                                                                                     id="id_ship_type">
+                                                        <option disabled selected="">Выбрать</option>
+                                                        <option value="Доставка">Доставка</option>
+                                                        <option value="Самовывоз">Самовывоз</option>
+                                                    </select></p>
+
+                                                </div>
+                                            </div>
+                                            <div class="cart-side">
+                                                <div class="payment">
+                                                    <h3>3. Оплата</h3>
+                                                    <p>Укажите тип оплаты: <select class="select-custom" name="pay_type"
+                                                                                   id="id_pay_type">
+                                                        <option disabled selected="">Выбрать</option>
+                                                        <option value="Онлайн">Онлайн</option>
+                                                        <option value="При получении">При получении</option>
+                                                    </select></p>
+                                                    <div class="block-submit" style="text-align: center">
+                                                        <input type="submit" value="Заказать" style="font-size: 40px">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-2 col-lg-2"></div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/product_qty.js') }}"></script>
+
+{% endblock %}
