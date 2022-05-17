@@ -88,7 +88,12 @@ def redirect_to_signin(response):
 def change_address():
     form = ChangeAddressForm()
     if form.validate_on_submit():
-        return redirect(url_for('account_bp.address'))
+        current_user.city = form.city.data
+        current_user.country = form.country.data
+        current_user.zip_code = form.zip_code.data
+        current_user.address = form.address.data
+        db.session.commit()
+        return redirect(url_for('account_bp.change_address'))
     return render_template('account/change_address.html', form=form)
 
 
