@@ -1,0 +1,71 @@
+{% extends 'account/user_profile.html' %}
+
+{% block title %}Адрес-Ноябрь{% endblock %}
+
+{% block info %}
+    <div class="col-md-4 col-sm-4 col-lg-4"></div>
+    <div class="address-info col-md-4 col-sm-4 col-lg-4">
+        <div class="customer-login">
+            <form class="form2" method="post"
+                  style="padding-top: 0; margin-top: 0">
+                <div class="block-a">
+                    <h1 style="text-align: center; font-size: 25px;padding-top: 0px;margin-top: 0px; ">
+                        Адрес доставки</h1>
+                </div>
+                <div class="block-a">
+                    <label class="label-form">
+
+                    </label>
+                    <input type="text" name="country" required=""
+                           id="id_country" value=""
+                           style="text-align: center">
+                </div>
+                <div class="block-a">
+                    <label class="label-form">
+
+                    </label>
+                    <input type="text" name="city" required=""
+                           id="id_city"
+                           value="" style="text-align: center">
+                </div>
+                <div class="block-a">
+                    <label class="label-form">
+
+                    </label>
+                    <input type="text" name="address" required="" id="id_address"
+                           value="" style="text-align: center">
+                </div>
+                <div class="block-a">
+                    <label class="label-form">
+
+                    </label>
+                    <input type="text" name="zip_code" required="" id="id_zip_code"
+                           value="" style="text-align: center">
+                </div>
+                <div class="block-submit">
+                    <input type="submit" value="Сохранить">
+                </div>
+            </form>
+            <form method="post" action="/">
+                {{ form.csrf_token }}
+                {{ form.country.label }} {{ form.country }}
+                {{ form.city.label }} {{ form.city }}
+                {{ form.address.label }} {{ form.address }}
+                {{ form.zip_code.label }} {{ form.zip_code }}
+                <input type="submit", value="Сохранить">
+            </form>
+        </div>
+        <div class="col-md-4 col-sm-4 col-lg-4"></div>
+    </div>
+
+    <style>
+        .link-profile {
+            border-bottom: none;
+        }
+
+        .link-address {
+            border-bottom: 2px solid;
+        }
+
+    </style>
+{% endblock %}

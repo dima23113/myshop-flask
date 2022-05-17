@@ -5,6 +5,7 @@ from flask_login import login_user, login_required, logout_user, user_unauthoriz
 from model import User
 from app import login_manager
 from app import db
+from .forms import ChangeAddressForm
 
 account_bp = Blueprint('account_bp', __name__, template_folder='../templates', static_folder='../static',
                        static_url_path='')
@@ -15,6 +16,17 @@ def load_user(user_id):
     print('fi')
     print(User.query.get(user_id))
     return User.query.get(user_id)
+
+
+@account_bp.route('/', methods=['GET', 'POST'])
+@login_required
+def account_profile():
+    user = current_user
+    context = {
+        'user': user,
+
+    }
+    return render_template('account/user_profile.html', context=context)
 
 
 @account_bp.route('/register', methods=['GET', 'POST'])
@@ -38,7 +50,7 @@ def register():
 
 @account_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if user_unauthorized:
+    if not user_unauthorized:
         return redirect(url_for('shop_bp.index'))
     else:
         email = request.form.get('email')
@@ -48,7 +60,8 @@ def login():
             print(user)
             if check_password_hash(user.password, password):
                 login_user(user)
-                return redirect(url_for('shop_bp.index'))
+                next_page = request.args.get('next', url_for('shop_pb.index'))
+                return redirect(next_page)
             else:
                 flash('Пароль или логин введен неверно!')
         else:
@@ -63,19 +76,35 @@ def logout():
     return redirect(url_for('shop_bp.index'))
 
 
-@account_bp.route('/', methods=['GET', 'POST'])
-@login_required
-def account_profile():
-    user = current_user
-    context = {
-        'user': user,
-
-    }
-    return render_template('account/user_profile.html', context=context)
-
-
 @account_bp.after_app_request
 def redirect_to_signin(response):
     if response.status_code == 401:
         return redirect(url_for('account_bp.login') + '?next=' + request.url)
     return response
+
+
+@account_bp.route('/address', methods=['GET', 'POST'])
+@login_required
+def change_address():
+    form = ChangeAddressForm()
+    if form.validate_on_submit():
+        return redirect(url_for('account_bp.address'))
+    return render_template('account/change_address.html', form=form)
+
+
+@account_bp.route('/orders', methods=['GET', 'POST'])
+@login_required
+def orders_list():
+    pass
+
+
+@account_bp.route('/tickets', methods=['GET', 'POST'])
+@login_required
+def tickets_list():
+    pass
+
+
+@account_bp.route('/favorites', methods=['GET', 'POST'])
+@login_required
+def favorites_list():
+    pass

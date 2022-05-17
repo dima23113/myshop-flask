@@ -28,7 +28,7 @@ def create_app():
 
     db.init_app(app)
     migrate = Migrate(app, db)
-    toolbar = DebugToolbarExtension(app)
+    #toolbar = DebugToolbarExtension(app)
     thumb = Thumbnail(app)
     login_manager.init_app(app)
     # Добавляем модели в админку и сортируем их по категориям
