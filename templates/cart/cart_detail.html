@@ -30,13 +30,13 @@
                                                 <div class="items-wrapper__product">
                                                     <div class="product__image">
                                                         <a class="img"
-                                                           href="{{ url_for('shop_bp.product_detail', product.slug }}">
+                                                           href="{{ url_for('shop_bp.product_detail', product.slug )}}">
                                                             <img src="{{ url_for('static', filename='uploads/' + product.img|thumbnail('100x100')|get_path) }}">
                                                         </a>
                                                     </div>
                                                     <div class="product__descr">
                                                         <div class="title">
-                                                            <a href="{{ url_for('shop_bp.product_detail', product.slug }}">{{ product.name }}</a>
+                                                            <a href="{{ url_for('shop_bp.product_detail', product.slug )}}">{{ product.name }}</a>
                                                         </div>
 
                                                         <div>Размер: {{ item.size }}</div>

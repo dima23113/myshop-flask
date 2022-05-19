@@ -28,7 +28,7 @@ def create_app():
 
     db.init_app(app)
     migrate = Migrate(app, db)
-    #toolbar = DebugToolbarExtension(app)
+    toolbar = DebugToolbarExtension(app)
     thumb = Thumbnail(app)
     login_manager.init_app(app)
     # Добавляем модели в админку и сортируем их по категориям
@@ -50,4 +50,7 @@ def create_app():
 
     from account.account import account_bp
     app.register_blueprint(account_bp, url_prefix='/account')
+
+    from cart.cart import cart_bp
+    app.register_blueprint(cart_bp, url_prefix='/cart')
     return app

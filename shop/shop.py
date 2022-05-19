@@ -7,6 +7,7 @@ shop_bp = Blueprint('shop_bp', __name__, template_folder='../templates', static_
 
 @shop_bp.route('/', methods=['GET'])
 def index(*args, **kwargs):
+    print(request.cookies.get('sessionid'))
     return render_template('base.html')
 
 
