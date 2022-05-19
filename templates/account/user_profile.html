@@ -42,7 +42,7 @@
                             <div class="container-fluid">
                                 <div class="row">
                                     <duv class="user-info col-md-4 col-sm-4 col-lg-4">
-                                        <p><b>{{ context.user.get_full_name }}</b></p>
+                                        <p><b>{{ current_user.get_full_name() }}</b></p>
                                         <div class="user-edit-block">
                                             <a class="phone" href="#">{{ current_user.phone }}</a><br>
                                             <a class="email" href="#">{{ current_user.email }}</a><br>
@@ -62,15 +62,16 @@
                                     <div class="user-info col-md-4 col-sm-4 col-lg-4">
                                         <div class="customer-login">
                                             <form class="bio-form" method="post"
-                                                  action="{{ url_for('account_bp.account_profile') }}"
+                                                  action="{{ url_for('account_bp.account_profile', form_id=1) }}"
                                                   style="padding-top: 0; margin-top: 0">
+                                                {{ context.form_bio.csrf_token }}
                                                 <div class="block-a">
                                                     <h1 style="text-align: center; font-size: 25px;padding-top: 0px;margin-top: 0px; ">
                                                         Личные данные</h1>
                                                 </div>
                                                 <div class="block-a">
                                                     <label class="label-form">
-                                                        {{ form_bio.first_name.label }}
+                                                        {{ context.form_bio.first_name.label }}
                                                     </label>
                                                     <input type="first_name" name="first_name" required=""
                                                            id="first_name" value="{{ current_user.first_name }}"
@@ -78,11 +79,11 @@
                                                 </div>
                                                 <div class="block-a">
                                                     <label class="label-form">
-                                                        {{ form_bio.last_name.label }}
+                                                        {{ context.form_bio.last_name.label }}
                                                     </label>
                                                     <input type="last_name" name="last_name" required=""
                                                            id="last_name"
-                                                           value="{{ current_user.last_name }}"
+                                                           value="{{ current_user.second_name }}"
                                                            style="text-align: center">
                                                 </div>
                                                 <div class="block-submit">
@@ -90,15 +91,16 @@
                                                 </div>
                                             </form>
                                             <form class="phone-form" method="post"
-                                                  action="{{ url_for('account_bp.account_profile') }}"
+                                                  action="{{ url_for('account_bp.account_profile', form_id=2) }}"
                                                   style="padding-top: 0; margin-top: 0">
+                                                {{ context.form_phone.csrf_token }}
                                                 <div class="block-a">
                                                     <h1 style="text-align: center; font-size: 25px;padding-top: 0px;margin-top: 0px; ">
                                                         Изменить телефон</h1>
                                                 </div>
                                                 <div class="block-a">
                                                     <label class="label-form">
-                                                        {{ form_phone.phone.label }}
+                                                        {{ context.form_phone.phone.label }}
                                                     </label>
                                                     <input type="phone" name="phone" required=""
                                                            id="phone" value="{{ current_user.phone }}"
@@ -109,22 +111,23 @@
                                                 </div>
                                             </form>
                                             <form class="password-change-form" method="post"
-                                                  action="{{ url_for('account_bp.account_profile') }}"
+                                                  action="{{ url_for('account_bp.account_profile', form_id=3) }}"
                                                   style="padding-top: 0; margin-top: 0">
+                                                {{ context.form_password.csrf_token }}
                                                 <div class="block-a">
                                                     <h1 style="text-align: center; font-size: 25px;padding-top: 0px;margin-top: 0px; ">
                                                         Смена пароля</h1>
                                                 </div>
                                                 <div class="block-a">
                                                     <label class="label-form">
-                                                        {{ form_password.new_password.label }}
+                                                        {{ context.form_password.password.label }}
                                                     </label>
                                                     <input type="password" name="password" required=""
                                                            id="password">
                                                 </div>
                                                 <div class="block-a">
                                                     <label class="label-form">
-                                                        {{ form_password.confirm_password.label }}
+                                                        {{ context.form_password.password2.label }}
                                                     </label>
                                                     <input type="password" name="password2" required=""
                                                            id="password2">
@@ -134,14 +137,15 @@
                                                 </div>
                                             </form>
                                             <form class="mailing-form" method="post"
-                                                  action="{{ url_for('account_bp.account_profile') }}"
+                                                  action="{{ url_for('account_bp.account_profile', form_id=4) }}"
                                                   style="padding-top: 0; margin-top: 0">
+                                                {{ context.form_mailing.csrf_token }}
                                                 <div class="block-a">
                                                     <h1 style="text-align: center; font-size: 25px;padding-top: 0px;margin-top: 0px; ">
                                                         Рассылка предложений</h1>
                                                 </div>
                                                 <div class="block-a">
-                                                    <label style="text-align: center">{{ form_mailing.mailing_yes.label }}</label>
+                                                    <label style="text-align: center">{{ context.form_mailing.mailing_yes.label }}</label>
                                                     <input type="checkbox" name="mailing_yes" id="mailing_yes"
                                                            checked>
                                                 </div>
@@ -150,14 +154,15 @@
                                                 </div>
                                             </form>
                                             <form class="email-form" method="post"
-                                                  action="{{ url_for('account_bp.account_profile') }}"
+                                                  action="{{ url_for('account_bp.account_profile', form_id=5) }}"
                                                   style="padding-top: 0; margin-top: 0">
+                                                {{ context.form_email.csrf_token }}
                                                 <div class="block-a">
                                                     <h1 style="text-align: center; font-size: 25px;padding-top: 0px;margin-top: 0px; ">
                                                         Изменить E-Mail</h1>
                                                 </div>
                                                 <div class="block-a">
-                                                    <label>{{ form_email.email.label }}</label>
+                                                    <label>{{ context.form_email.email.label }}</label>
                                                     <input type="email" name="email" id="email"
                                                            value="{{ current_user.email }}">
                                                 </div>

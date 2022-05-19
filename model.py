@@ -26,6 +26,9 @@ class User(db.Model, UserMixin):
     def __repr__(self) -> str:
         return f'User id: {self.id}, email: {self.email}'
 
+    def get_full_name(self):
+        return f'{self.first_name} {self.second_name}'
+
 
 class Category(db.Model):
     __tablename__ = 'category'

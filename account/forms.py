@@ -19,13 +19,13 @@ class ChangePhoneNumberForm(FlaskForm):
     phone = StringField('Номер телефона', validators=[DataRequired()])
 
 
-class PasswordChangeForm(FlaskForm):
-    password = StringField('Номер телефона', validators=[DataRequired()])
-    password2 = StringField('Номер телефона', validators=[DataRequired()])
+class ChangePasswordForm(FlaskForm):
+    password = StringField('Введите пароль', validators=[DataRequired()])
+    password2 = StringField('Повторите пароль', validators=[DataRequired()])
 
 
-class MailingChangeForm(FlaskForm):
-    mailing_yes = BooleanField('Рассылка e-mail уведомлений', validators=[DataRequired], default=True)
+class ChangeMailingForm(FlaskForm):
+    mailing_yes = BooleanField('Рассылка e-mail уведомлений', validators=[DataRequired()], default=True)
 
 
 class ChangeEmailForm(FlaskForm):

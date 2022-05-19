@@ -5,7 +5,7 @@ from flask_login import login_user, login_required, logout_user, user_unauthoriz
 from model import User
 from app import login_manager
 from app import db
-from .forms import ChangeAddressForm
+from .forms import *
 
 account_bp = Blueprint('account_bp', __name__, template_folder='../templates', static_folder='../static',
                        static_url_path='')
@@ -21,10 +21,40 @@ def load_user(user_id):
 @account_bp.route('/', methods=['GET', 'POST'])
 @login_required
 def account_profile():
-    user = current_user
+    form_bio = ChangeBioForm()
+    form_phone = ChangePhoneNumberForm()
+    form_password = ChangePasswordForm()
+    form_mailing = ChangeMailingForm()
+    form_email = ChangeEmailForm()
+    form_id = request.args.get('form_id', '')
+    if form_bio.validate_on_submit() and form_id == '1':
+        current_user.first_name = form_bio.first_name.data
+        current_user.second_name = form_bio.last_name.data
+        db.session.commit()
+        return redirect(url_for('account_bp.account_profile'))
+    if form_phone.validate_on_submit() and form_id == '2':
+        current_user.phone = form_phone.phone.data
+        db.session.commit()
+        return redirect(url_for('account_bp.account_profile'))
+    if form_password.validate_on_submit() and form_id == '3':
+        if form_password.password.data == form_password.password2.data:
+            current_user.password = generate_password_hash(form_password.password.data)
+            db.session.commit()
+            return redirect(url_for('account_bp.account_profile'))
+    if form_mailing.validate_on_submit() and form_id == '4':
+        print(form_mailing.mailing_yes.data)
+        current_user.email_mailing = form_mailing.mailing_yes.data
+        db.session.commit()
+        return redirect(url_for('account_bp.account_profile'))
+    if form_email.validate_on_submit() and form_id == '5':
+        flash('Обратитесь в ТП сайса для смены почты')
+        return redirect(url_for('account_bp.account_profile'))
     context = {
-        'user': user,
-
+        'form_bio': form_bio,
+        'form_phone': form_phone,
+        'form_password': form_password,
+        'form_mailing': form_mailing,
+        'form_email': form_email
     }
     return render_template('account/user_profile.html', context=context)
 
