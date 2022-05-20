@@ -1,22 +1,22 @@
+from flask import session
 from model import *
 from decimal import Decimal
+from app.services import get_object_or_404
 
 
 class Cart(object):
     CART_SESSION_ID = 'cart'
 
     def __init__(self, request, new_session=None):
-
-        if new_session:
-            self.session = new_session
-        else:
-            self.session = request.session
+        print(session)
+        self.session = session
         cart = self.session.get(self.CART_SESSION_ID)
         if not cart:
             cart = self.session[self.CART_SESSION_ID] = {}
         self.cart = cart
 
     def add(self, product, qty=1, size=None, update_qty=False):
+        print(size)
         product_id = str(product.id) + '-' + size
         if product_id not in self.cart:
             if product.price_discount is None:
@@ -36,7 +36,8 @@ class Cart(object):
         if update_qty:
             self.cart[product_id]['qty'] = qty
         else:
-            if self.cart[product_id]['qty'] < ProductSize.query.filter_by(product=product, name=size).qty:
+            item_sizes = get_object_or_404(ProductSize, ProductSize.name == size)
+            if self.cart[product_id]['qty'] < item_sizes.qty:
                 self.cart[product_id]['qty'] += qty
             else:
                 pass

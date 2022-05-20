@@ -10,4 +10,4 @@ class CartUpdateProductForm(FlaskForm):
 
 
 class CartAddProductForm(FlaskForm):
-    size = StringField('Добавление товара в корзину', widget=HiddenInput())
+    id_size = StringField('Добавление товара в корзину', widget=HiddenInput())

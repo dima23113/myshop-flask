@@ -66,10 +66,11 @@
                                 <div class="product-add">
                                     <div class="customer-login">
                                         <form class="login-form" method="post"
-                                              action="."
+                                              action="{{ url_for('shop_bp.product_detail', slug=context.product.slug) }}"
                                               style="padding-top: 0px;margin-top: 0px;">
                                             <div class="block-a">
-                                                <input class="size" value="" type="text" name="size" required=""
+                                                {{ form.csrf_token }}
+                                                <input class="id_size" value="" type="text" name="id_size" required=""
                                                        id="id_size" hidden>
                                             </div>
                                             <div class="block-submit">
