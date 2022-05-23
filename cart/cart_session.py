@@ -7,7 +7,7 @@ from app.services import get_object_or_404
 class Cart(object):
     CART_SESSION_ID = 'cart'
 
-    def __init__(self, request, new_session=None):
+    def __init__(self, new_session=None):
         print(session)
         self.session = session
         cart = self.session.get(self.CART_SESSION_ID)
@@ -58,8 +58,10 @@ class Cart(object):
         tst2 = []
         for i in product_ids:
             tst2.append(i)
+        print(tst2)
         for i in range(len(tst2)):
-            self.cart[tst2[i]]['product'] = Product.objects.get(id=tst2[i].split('-')[0])
+            t = Product.query.filter(Product.id == tst2[i].split('-')[0])
+            self.cart[tst2[i]]['product'] = get_object_or_404(Product, Product.id == tst2[i].split('-')[0])
         for item in self.cart.values():
             item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['qty']

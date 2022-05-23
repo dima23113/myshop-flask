@@ -1,10 +1,10 @@
-from flask import Blueprint, request, redirect, url_for, session
+from flask import Blueprint, request, redirect, url_for, session, render_template
 from .cart_session import Cart
 from app.services import get_object_or_404
 from model import Product
-from .forms import CartAddProductForm
-cart_bp = Blueprint('cart_bp', __name__, template_folder='../templates', static_folder='../static', static_url_path='')
+from .forms import CartAddProductForm, CartUpdateProductForm
 
+cart_bp = Blueprint('cart_bp', __name__, template_folder='../templates', static_folder='../static', static_url_path='')
 
 '''@cart_bp.route('cart-add/<slug>/', methods=['POST'])
 def cart_add(*args, **kwargs):
@@ -20,6 +20,11 @@ def cart_add(*args, **kwargs):
 
 @cart_bp.route('cart_detail/', methods=['GET', 'POST'])
 def cart_detail(*args, **kwargs):
-    print(request.data)
-    print(session)
-    return 'aaaa'
+    cart = Cart()
+    form = CartUpdateProductForm()
+    print(cart.cart)
+    context = {
+        'cart': cart,
+        'form': form
+    }
+    return render_template('cart/cart_detail.html', context=context)

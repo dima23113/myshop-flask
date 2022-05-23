@@ -30,13 +30,13 @@
                                                 <div class="items-wrapper__product">
                                                     <div class="product__image">
                                                         <a class="img"
-                                                           href="{{ url_for('shop_bp.product_detail', product.slug )}}">
+                                                           href="{{ url_for('shop_bp.product_detail', slug=product.slug ) }}">
                                                             <img src="{{ url_for('static', filename='uploads/' + product.img|thumbnail('100x100')|get_path) }}">
                                                         </a>
                                                     </div>
                                                     <div class="product__descr">
                                                         <div class="title">
-                                                            <a href="{{ url_for('shop_bp.product_detail', product.slug )}}">{{ product.name }}</a>
+                                                            <a href="{{ url_for('shop_bp.product_detail', slug=product.slug ) }}">{{ product.name }}</a>
                                                         </div>
 
                                                         <div>Размер: {{ item.size }}</div>
@@ -74,11 +74,11 @@
                                     </div>
 
                                     <div>
-                                        <p class="price_">Стомость товаров: {{ context.cart.get_total_price }} руб.</p>
+                                        <p class="price_">Стомость товаров: {{ context.cart.get_total_price() }} руб.</p>
                                         <p class="price_">Стомость товаров со
-                                            скидкой: {{ context.cart.get_total_discount_price }}
+                                            скидкой: {{ context.cart.get_total_discount_price() }}
                                             руб.</p>
-                                        <p class="price_">Итого: {{ context.cart.get_total_discount_price }} руб.</p>
+                                        <p class="price_">Итого: {{ context.cart.get_total_discount_price() }} руб.</p>
                                     </div>
                                 </div>
                             </div>
@@ -86,12 +86,12 @@
 
                                 <div class="cart-col">
                                     <p style="margin-bottom: 0rem;">Оформление заказа</p>
-                                    {% if not user.is_authenticated %}
+                                    {% if not current_user.is_authenticated %}
                                         <div class="cart-side">
                                             <div class="log">
-                                                <a class="log-in" href="{% url 'account:login' %}">Войти</a>
+                                                <a class="log-in" href="{{ url_for('account_bp.login') }}">Войти</a>
                                                 <a class="reg"
-                                                   href="{% url 'account:register' %}">Зарегистрироваться</a>
+                                                   href="{{ url_for('account_bp.register') }}">Зарегистрироваться</a>
                                             </div>
                                         </div>
                                     {% else %}
@@ -102,7 +102,7 @@
                                                     <div class="profile-info">
                                                         <a href=".">Изменить</a>
                                                         <h3>1. Контакты</h3>
-                                                        <p>{{ user.first_name }}&nbsp{{ user.last_name }}, {{ user.phone }}, {{ user.email }}</p>
+                                                        <p>{{ current_user.first_name }}&nbsp{{ current_user.second_name }}, {{ current_user.phone }}, {{ current_user.email }}</p>
                                                     </div>
                                                 </div>
                                             </div>
