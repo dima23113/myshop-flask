@@ -6,6 +6,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_thumbnails import Thumbnail
 from flask_login import LoginManager
+from flask_cors import CORS
 import os
 
 db = SQLAlchemy()
@@ -30,6 +31,7 @@ def create_app():
     migrate = Migrate(app, db)
     toolbar = DebugToolbarExtension(app)
     thumb = Thumbnail(app)
+    CORS(app)
     login_manager.init_app(app)
     # Добавляем модели в админку и сортируем их по категориям
 
@@ -52,5 +54,5 @@ def create_app():
     app.register_blueprint(account_bp, url_prefix='/account')
 
     from cart.cart import cart_bp
-    app.register_blueprint(cart_bp, url_prefix='/cart')
+    app.register_blueprint(cart_bp, url_prefix='/')
     return app

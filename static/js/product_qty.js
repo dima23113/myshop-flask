@@ -17,8 +17,7 @@ function getCookie(name) {
 function updatePrice() {
     setTimeout(function () {
         $.ajax({
-            url: 'price/',
-            headers: {'Access-Control-Allow-Origin': '*'},
+            url: '/price',
             success: function (response) {
                 c = ['Стоимость товаров: ', 'Стоимость товаров со скидкой: ', 'Итого: ']
                 c1 = []
@@ -38,8 +37,7 @@ function updatePrice() {
 function updateQtyCart() {
     setTimeout(function () {
         $.ajax({
-            url: 'cart-qty/',
-            headers: {'Access-Control-Allow-Origin': '*'},
+            url: '/cart-qty',
             success: function (response) {
                 console.log(response['cart_qty'])
                 r = document.getElementById('cart_qty')
@@ -56,13 +54,14 @@ document.addEventListener('DOMContentLoaded', function () {
     $(document).ready(function () {
         $(".remove-btn").click(function () {
             var product_id = $(this).data('product')
+            console.log(product_id)
             var size = $(this).data('size')
+            console.log(size)
             product_id = product_id + '-' + size
             console.log(product_id)
             $.ajax({
-                data: {'product_id': product_id, 'csrfmiddlewaretoken': csrftoken},
-                url: "remove/",
-                headers: {'Access-Control-Allow-Origin': '*'},
+                data: {'product_id': product_id},
+                url: "/remove",
                 method: 'post',
                 success: function (response) {
                     var els = document.getElementById(response['id'])
@@ -117,9 +116,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateQty(product, qty, max_qty, size) {
         $.ajax({
-            data: {'product': product, 'qty': qty, 'max_qty': max_qty, 'size': size, 'csrfmiddlewaretoken': csrftoken},
-            url: 'qty/',
-            headers: {'Access-Control-Allow-Origin': '*'},
+            data: {'product': product, 'qty': qty, 'max_qty': max_qty, 'size': size},
+            url: '/qty',
             method: 'post',
             success: function (response) {
                 console.log(response)
@@ -133,9 +131,8 @@ document.addEventListener('DOMContentLoaded', function () {
     $(document).ready(function () {
         $(".remove-all").click(function () {
             $.ajax({
-                data: {'remove_all': true, 'csrfmiddlewaretoken': csrftoken},
-                url: "remove/",
-                headers: {'Access-Control-Allow-Origin': '*'},
+                data: {'remove_all': true},
+                url: "/remove",
                 method: 'post',
                 success: function (response) {
                     console.log(response)
@@ -157,8 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 var size = a.getAttribute('data-size')
                 $.ajax({
                     data: {'product': product, 'size': size},
-                    headers: {'Access-Control-Allow-Origin': '*'},
-                    url: 'qty/',
+                    url: '/qty',
                     success: function (response) {
                         console.log(response)
                         product_ = response['product']
