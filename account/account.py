@@ -31,6 +31,7 @@ def account_profile():
         current_user.first_name = form_bio.first_name.data
         current_user.second_name = form_bio.last_name.data
         db.session.commit()
+        flash('Данные сохранены!')
         return redirect(url_for('account_bp.account_profile'))
     if form_phone.validate_on_submit() and form_id == '2':
         current_user.phone = form_phone.phone.data
