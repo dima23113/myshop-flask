@@ -18,7 +18,7 @@ def create_app():
     # Создаем приложение, добавляем переменные конфигурации
 
     app = Flask(__name__, static_folder='../static', template_folder='../template/')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11081998@localhost/flask-shop'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost/flask-shop'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
     app.config['SECRET_KEY'] = "Gre3QmyUu7PD-xvtBKmsow"
