@@ -1,5 +1,6 @@
 from slugify import slugify
 from sqlalchemy import ForeignKey
+
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from flask_login import UserMixin

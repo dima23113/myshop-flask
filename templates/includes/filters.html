@@ -1,0 +1,83 @@
+<div class="cell">
+    <div class="clear_all" style="margin-bottom: 30px;"><a class="clear_filter" href="#"
+                                                           id="clear_filter">Очистить</a>
+    </div>
+
+    <div class="sort_filter_flex">
+        <div class="sort_by">
+            <a href="#" class="sort_toggle">Сортировать</a>
+            <div class="sort_toggle_d">
+                <div class="nw-i-filter">
+                    <ul>
+                        <li class="sort">
+                            <a href="#" id="popular">Популярное</a>
+                        </li>
+                        <li class="sort">
+                            <a href="#" id="newest">Новинки</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="filter_by">
+            <a href="#" class="filter_toggle">Фильтровать</a>
+            <div class="filter_toggle_d">
+                <div class="nw-i-filter">
+                    <label class="category_type" data-id="">Категория:</label>
+                    <ul>
+                        {% for c in context.category %}
+                            <li class="filter">
+                                <a class="category" href="#" data-id="{{ c.id }}"
+                                   id="{{ c.name }}">{{ c.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="nw-i-filter">
+                    <label class="subcategory_type" data-id="">Подкатегория:</label>
+                    <ul>
+                        {% for c in context.subcategory %}
+                            <li class="filter">
+                                <a class="subcategory" href="#" data-id="{{ c.id }}"
+                                   id="{{ c.name }}">{{ c.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="nw-i-filter">
+                    <label class="subcategory_type_type" data-id="">Тип Подкатегории:</label>
+                    <ul>
+                        {% for c in context.subcategory_type %}
+                            <li class="filter">
+                                <a class="subcategory_type_type_t" href="#" data-id="{{ c.id }}"
+                                   id="{{ c.name }}">{{ c.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="nw-i-filter">
+                    <label class="brand_type" data-id="">Бренд:</label>
+                    <ul>
+                        {% for c in context.brand %}
+                            <li class="filter">
+                                <a class="brands" href="#" data-id="{{ c.id }}"
+                                   id="{{ c.name }}">{{ c.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="nw-i-filter">
+                    <span class="sizes">Размеры:</span>
+                    <ul>
+                        {% for i in context.sizes %}
+                            <li class="filter">
+                                <a class="size" href="#" data-id="{{ i.name }}"
+                                   id="{{ i.name }}">{{ i.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
