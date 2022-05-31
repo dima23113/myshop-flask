@@ -23,7 +23,6 @@ def sort_brand_list_into_2_columns():
 
 
 def get_product_list(obj, slug):
-    print(obj)
     """Выдаем товары и submenu для выбранной категории/подкатегории/типа подкатегории"""
     if obj == 'category':
         products = Product.query.filter(Product.category_slug == slug,
@@ -37,18 +36,29 @@ def get_product_list(obj, slug):
             available=True)
 
     if obj == 'subcategorytype':
-        products = Product.objects.filter(Product.subcategory_type_slug == slug,
-                                          Product.available == True)
+        products = Product.objects.with_entities(Product.slug, Product.price, Product.price_discount, Product.img,
+                                                 Product.name, Product.brand_slug, Product.id).filter(
+            Product.subcategory_type_slug == slug,
+            Product.available == True)
     category, subcategory, subcategory_type, sizes, brand = get_left_filter_submenu(products)
     return products, brand, category, subcategory, subcategory_type, sizes
 
 
 def get_left_filter_submenu(product):
     """Получаем submenu для набора товаров"""
-    category = Category.query.join(Category.products).filter(Product.id.in_(i.id for i in product)).all()
-    subcategory = Subcategory.query.join(Subcategory.products).filter(Product.id.in_(i.id for i in product)).all()
-    subcategory_type = Subcategory_type.query.join(Subcategory_type.products).filter(
+    category = Category.query.with_entities(
+        Category.name, Category.id).distinct(Category.name).join(Category.products).filter(
         Product.id.in_(i.id for i in product)).all()
-    sizes = ProductSize.query.join(ProductSize.prouduct_sizes).filter(Product.id.in_(i.id for i in product)).all()
-    brands = Brand.query.join(Brand.products).filter(Product.id.in_(i.id for i in product)).all()
+    subcategory = Subcategory.query.with_entities(Subcategory.name, Subcategory.id).distinct(Subcategory.name).join(
+        Subcategory.products).filter(
+        Product.id.in_(i.id for i in product)).all()
+    subcategory_type = Subcategory_type.query.with_entities(Subcategory_type.name, Subcategory_type.id).distinct(
+        Subcategory_type.name).join(
+        Subcategory_type.products).filter(
+        Product.id.in_(i.id for i in product)).all()
+    sizes = ProductSize.query.with_entities(ProductSize.name, ProductSize.id).join(ProductSize.prouduct_sizes).distinct(
+        ProductSize.name).filter(
+        Product.id.in_(i.id for i in product)).all()
+    brands = Brand.query.with_entities(Brand.id, Brand.name).distinct(Brand.name).join(Brand.products).filter(
+        Product.id.in_(i.id for i in product)).all()
     return category, subcategory, subcategory_type, sizes, brands
